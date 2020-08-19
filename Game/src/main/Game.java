@@ -6,7 +6,6 @@ public class Game {
     public static void main(String[] args) {
 
         int vidaHeroi = 10;
-        int vidaHeroiBuff;
         int vidaInimigo = 10;
 
         System.out.println("Bem-vindo ao jogo!");
