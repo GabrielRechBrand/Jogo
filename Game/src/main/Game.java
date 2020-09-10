@@ -27,7 +27,7 @@ public class Game {
         for (int i = 0; i < 7; ++i)
             System.out.println();
 
-        Random random = new Random();
+        Random random = new     Random();
 
         if (numeroModo == 1) {
 
@@ -131,26 +131,36 @@ public class Game {
             }
         } else if (numeroModo == 2) {
 
-            int constanteDeDano = 0;
-            int constanteDeCura = 0;
+            int cooldownCuraUm = 1;
+            int cooldownCuraDois = 1;
+
+            boolean cansadoUm = false;
+            boolean cansadoDois = false;
+
+            int maximoDanoUm = 0;
+            int maximoDanoUmCansado = 0;
+            int maximoCuraUm = 0;
 
             if (numeroClasse == 1) {
-                constanteDeDano = 16;
-                constanteDeCura = 11;
+                maximoDanoUm = 16;
+                maximoDanoUmCansado = 10;
+                maximoCuraUm = 11;
             } else if (numeroClasse == 2) {
-                constanteDeDano = 11;
-                constanteDeCura = 16;
+                maximoDanoUm = 11;
+                maximoCuraUm = 16;
             }
 
-            int constanteDeDanoDois = 0;
-            int constanteDeCuraDois = 0;
+            int maximoDanoDois = 0;
+            int maximoDanoDoisCansado = 0;
+            int maximoCuraDois = 0;
 
             if (numeroClasseDois == 1) {
-                constanteDeDanoDois = 16;
-                constanteDeCuraDois = 11;
+                maximoDanoDois = 16;
+                maximoDanoDoisCansado = 10;
+                maximoCuraDois = 11;
             } else if (numeroClasseDois == 2) {
-                constanteDeDanoDois = 11;
-                constanteDeCuraDois = 16;
+                maximoDanoDois = 11;
+                maximoCuraDois = 16;
             }
 
             System.out.println("Vida Player I = " + vidaJogadorUm);
@@ -173,23 +183,67 @@ public class Game {
                 }
 
                 if (numeroAcaoUm == 1) {
-                    int geraDano = random.nextInt(constanteDeDano);
-                    vidaJogadorDois = vidaJogadorDois - geraDano;
-                    System.out.println("Um atacou");
-                    System.out.println("Vida Player I = " + vidaJogadorUm);
-                    System.out.println("Vida Player II = " + vidaJogadorDois);
-                    System.out.println("");
-                    for (int i = 0; i < 7; ++i)
-                        System.out.println();
-                } else if (numeroAcaoUm== 2) {
-                    int geraCura = random.nextInt(constanteDeCura);
-                    vidaJogadorUm = vidaJogadorUm + constanteDeCura;
-                    System.out.println("Um curou");
-                    System.out.println("Vida Player I = " + vidaJogadorUm);
-                    System.out.println("Vida Player II = " + vidaJogadorDois);
-                    System.out.println("");
-                    for (int i = 0; i < 7; ++i)
-                        System.out.println();
+
+                    if(!cansadoUm) {
+
+                        int geraDano = random.nextInt(maximoDanoUm);
+                        vidaJogadorDois = vidaJogadorDois - geraDano;
+
+                        if (geraDano >= 12) {
+
+                            System.out.println("Um atacou e ficou cansado!");
+                            System.out.println("Vida Player I = " + vidaJogadorUm);
+                            System.out.println("Vida Player II = " + vidaJogadorDois);
+                            System.out.println("");
+                            cansadoUm = true;
+                            for (int i = 0; i < 7; ++i)
+                                System.out.println();
+
+                        } else if (geraDano < 12) {
+                            System.out.println("Um atacou");
+                            System.out.println("Vida Player I = " + vidaJogadorUm);
+                            System.out.println("Vida Player II = " + vidaJogadorDois);
+                            System.out.println("");
+                            cansadoUm = false;
+                            for (int i = 0; i < 7; ++i)
+                                System.out.println();
+                        }
+
+                    } else if(cansadoUm) {
+
+                            int geraDano = random.nextInt(maximoDanoUmCansado);
+                            vidaJogadorDois = vidaJogadorDois - geraDano;
+                            System.out.println("Um atacou");
+                            System.out.println("Vida Player I = " + vidaJogadorUm);
+                            System.out.println("Vida Player II = " + vidaJogadorDois);
+                            System.out.println("");
+                            cansadoUm = false;
+                            for (int i = 0; i < 7; ++i)
+                                System.out.println();
+
+                    }
+                } else if (numeroAcaoUm == 2 ) {
+
+                    if (cooldownCuraUm == 1 ) {
+                        int geraCura = random.nextInt(maximoCuraUm);
+                        vidaJogadorUm = vidaJogadorUm + geraCura;
+                        cooldownCuraUm = cooldownCuraUm + 1;
+                        System.out.println("Um curou");
+                        System.out.println("Vida Player I = " + vidaJogadorUm);
+                        System.out.println("Vida Player II = " + vidaJogadorDois);
+                        System.out.println("");
+                        for (int i = 0; i < 7; ++i)
+                            System.out.println();
+
+                    } else if (cooldownCuraUm == 2) {
+                        System.out.println("Um está recarregando a cura..");
+                        cooldownCuraUm = cooldownCuraUm - 1;
+                        System.out.println("Vida Player I = " + vidaJogadorUm);
+                        System.out.println("Vida Player II = " + vidaJogadorDois);
+                        System.out.println("");
+                        for (int i = 0; i < 7; ++i)
+                            System.out.println();
+                    }
                 }
 
                 if (vidaJogadorDois <= 0) {
@@ -204,25 +258,65 @@ public class Game {
                 int numeroAcaoDois = Integer.parseInt(escolhaAcaoDois);
 
                 if (numeroAcaoDois == 1) {
-                    int geraDano = random.nextInt(constanteDeDano);
-                    vidaJogadorUm = vidaJogadorUm - geraDano;
-                    System.out.println("Dois atacou");
-                    System.out.println("Vida Player I = " + vidaJogadorUm);
-                    System.out.println("Vida Player II = " + vidaJogadorDois);
-                    System.out.println("");
-                    for (int i = 0; i < 7; ++i)
-                        System.out.println();
 
+                    if(!cansadoDois) {
+
+                        int geraDano = random.nextInt(maximoDanoDois);
+                        vidaJogadorUm = vidaJogadorUm - geraDano;
+
+                        if (geraDano >= 12) {
+
+                            System.out.println("Dois atacou e ficou cansado!");
+                            System.out.println("Vida Player I = " + vidaJogadorUm);
+                            System.out.println("Vida Player II = " + vidaJogadorDois);
+                            System.out.println("");
+                            cansadoDois= true;
+                            for (int i = 0; i < 7; ++i)
+                                System.out.println();
+
+                        } else if (geraDano < 12) {
+
+                            System.out.println("Dois atacou");
+                            System.out.println("Vida Player I = " + vidaJogadorUm);
+                            System.out.println("Vida Player II = " + vidaJogadorDois);
+                            System.out.println("");
+                            cansadoDois = false;
+                            for (int i = 0; i < 7; ++i)
+                                System.out.println();
+                        }
+
+                    } else if(cansadoDois) {
+
+                        int geraDano = random.nextInt(maximoDanoDoisCansado);
+                        vidaJogadorUm = vidaJogadorUm - geraDano;
+                        System.out.println("Dois atacou");
+                        System.out.println("Vida Player I = " + vidaJogadorUm);
+                        System.out.println("Vida Player II = " + vidaJogadorDois);
+                        System.out.println("");
+                        cansadoUm = false;
+                        for (int i = 0; i < 7; ++i)
+                            System.out.println();
+                    }
                 } else if (numeroAcaoDois == 2) {
-                    int geraCura = random.nextInt(constanteDeCura);
-                    vidaJogadorDois = vidaJogadorDois + constanteDeCura;
-                    System.out.println("Dois curou");
-                    System.out.println("Vida Player I = " + vidaJogadorUm);
-                    System.out.println("Vida Player II = " + vidaJogadorDois);
-                    System.out.println("");
-                    for (int i = 0; i < 7; ++i)
-                        System.out.println();
-
+                    if (cooldownCuraDois == 1 ) {
+                        int geraCura = random.nextInt(maximoCuraDois);
+                        vidaJogadorDois = vidaJogadorDois + geraCura;
+                        cooldownCuraDois = cooldownCuraDois + 1;
+                        System.out.println("Dois curou");
+                        System.out.println("Vida Player I = " + vidaJogadorUm);
+                        System.out.println("Vida Player II = " + vidaJogadorDois);
+                        System.out.println("");
+                        for (int i = 0; i < 7; ++i)
+                            System.out.println();
+                    } else if (cooldownCuraDois == 2) {
+                        System.out.println("Dois está recarregando a cura..");
+                        cooldownCuraDois = cooldownCuraDois - 1;
+                        System.out.println("Vida Player I = " + vidaJogadorUm);
+                        System.out.println("Vida Player II = " + vidaJogadorDois);
+                        System.out.println("");
+                        for (int i = 0; i < 7; ++i)
+                            System.out.println();
+                    }
                 }
                 if (vidaJogadorDois <= 0) {
                     System.out.println("Player I venceu!");
